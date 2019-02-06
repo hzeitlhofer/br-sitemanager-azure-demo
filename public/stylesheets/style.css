@@ -7,3 +7,33 @@ body {
 a {
   color: #00B7FF;
 }
+
+#panel {
+	width: 100%;
+	text-align: center;
+}
+
+.text {
+	font-size: 150px;
+	font-weight: bold;
+	color: #888;
+	display: inline-block;
+//	float: left;
+}
+
+.box {
+	width: 200px;
+	height: 100px;
+	margin: auto 50px;
+//	float: left;
+	display: inline-block;
+	border: 10px solid #ddd;
+}
+
+.green {
+	background-color: #0f0;	
+}
+
+.red {
+	background-color: #f00;	
+}

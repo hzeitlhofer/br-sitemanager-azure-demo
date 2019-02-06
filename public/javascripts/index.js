@@ -1,7 +1,7 @@
 $(document).ready(function () {
   var timeData = [],
     temperatureData = [],
-    humidityData = [];
+    customData = [];
   var data = {
     labels: timeData,
     datasets: [
@@ -18,14 +18,14 @@ $(document).ready(function () {
       },
       {
         fill: false,
-        label: 'Humidity',
-        yAxisID: 'Humidity',
+        label: 'Wheel',
+        yAxisID: 'Wheel',
         borderColor: "rgba(24, 120, 240, 1)",
         pointBoarderColor: "rgba(24, 120, 240, 1)",
         backgroundColor: "rgba(24, 120, 240, 0.4)",
         pointHoverBackgroundColor: "rgba(24, 120, 240, 1)",
         pointHoverBorderColor: "rgba(24, 120, 240, 1)",
-        data: humidityData
+        data: customData
       }
     ]
   }
@@ -33,7 +33,7 @@ $(document).ready(function () {
   var basicOption = {
     title: {
       display: true,
-      text: 'Temperature & Humidity Real-time Data',
+      text: 'B&R SiteManager Demo',
       fontSize: 36
     },
     scales: {
@@ -46,10 +46,10 @@ $(document).ready(function () {
         },
         position: 'left',
       }, {
-          id: 'Humidity',
+          id: 'Wheel',
           type: 'linear',
           scaleLabel: {
-            labelString: 'Humidity(%)',
+            labelString: 'Wheel Position',
             display: true
           },
           position: 'right'
@@ -66,35 +66,81 @@ $(document).ready(function () {
     options: basicOption
   });
 
+  $("#noarrow").show();
+
   var ws = new WebSocket('wss://' + location.host);
   ws.onopen = function () {
     console.log('Successfully connect WebSocket');
   }
   ws.onmessage = function (message) {
-    console.log('receive message' + message.data);
+    var data = message.data.substring(0, message.data.length - 1);
     try {
-      var obj = JSON.parse(message.data);
-      if(!obj.time || !obj.temperature) {
-        return;
-      }
-      timeData.push(obj.time);
-      temperatureData.push(obj.temperature);
-      // only keep no more than 50 points in the line chart
-      const maxLen = 50;
-      var len = timeData.length;
-      if (len > maxLen) {
-        timeData.shift();
-        temperatureData.shift();
-      }
+      var obj = JSON.parse(data);
+      var switchPos = 0;
 
-      if (obj.humidity) {
-        humidityData.push(obj.humidity);
-      }
-      if (humidityData.length > maxLen) {
-        humidityData.shift();
-      }
+      for (i in obj.v) {
 
-      myLineChart.update();
+        var o = obj.v[i];
+
+        if (o.Left !== undefined) {
+          if (o.Left) {
+            switchPos = -1; 
+            $("#leftarrow").show();
+          } else {
+            $("#leftarrow").hide();
+          }
+        }
+
+        if (o.Right !== undefined) {
+          if (o.Right) {
+            switchPos = 1; 
+            $("#rightarrow").show();
+            $("#noarrow").hide();
+          } else {
+            $("#rightarrow").hide();
+          }
+        }
+        
+        if ($("#leftarrow").is(":visible") || $("#rightarrow").is(":visible")) {
+          $("#noarrow").hide();
+        } else {
+          $("#noarrow").show();
+        }
+
+
+        if (o.GreenButton !== undefined) {
+          if (o.GreenButton) {
+            $("#greenbox").addClass("green");
+          } else {
+            $("#greenbox").removeClass("green");
+          }
+        }
+
+        if (o.RedButton !== undefined) {
+          if (o.RedButton) {
+            $("#redbox").addClass("red");
+          } else {
+            $("#redbox").removeClass("red");
+          }
+        }
+
+        if (o.Wheel) {
+//          var ts = new Date(o.ts).toTimeString();
+          timeData.push("");
+          temperatureData.push(25);
+          customData.push(o.Wheel);
+
+          const maxLen = 100;
+          var len = timeData.length;
+          
+          if (len > maxLen) {
+            timeData.shift();
+            temperatureData.shift();
+            customData.shift();
+          }
+          myLineChart.update();
+        }
+      }
     } catch (err) {
       console.error(err);
     }
