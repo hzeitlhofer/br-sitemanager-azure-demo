@@ -1,5 +1,7 @@
-# web-apps-node-iot-hub-data-visualization
-This repo contains code for a web application, which can read temperature & humidity data from IoT hub and show the real-time data in a line chart on the web page.
+# B&R SiteManager Demo for Azure IoT
+This repo contains code for a web application, which can read several data from IoT hub and show the real-time data in a line chart on the web page.
+
+The code is based on https://github.com/Azure-Samples/web-apps-node-iot-hub-data-visualization
 
 ## Browser compatible
 | Browser | Least Version |
