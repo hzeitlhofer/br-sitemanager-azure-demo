@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
@@ -20,7 +22,7 @@ wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
       try {
-        console.log('sending data ' + data);
+//        console.log('sending data ' + data);
         client.send(data);
       } catch (e) {
         console.error(e);
@@ -29,12 +31,16 @@ wss.broadcast = function broadcast(data) {
   });
 };
 
+console.log('connecting to Azure IoT Hub');
 var iotHubReader = new iotHubClient(process.env['Azure.IoT.IoTHub.ConnectionString'], process.env['Azure.IoT.IoTHub.ConsumerGroup']);
+console.log('connected');
+
 iotHubReader.startReadMessage(function (obj, date) {
   try {
-    console.log(date);
+//    console.log(date, obj.toString());
     date = date || Date.now()
-    wss.broadcast(JSON.stringify(Object.assign(obj, { time: moment.utc(date).format('YYYY:MM:DD[T]hh:mm:ss') })));
+//    wss.broadcast(JSON.stringify(Object.assign(obj, { time: moment.utc(date).format('YYYY:MM:DD[T]hh:mm:ss') })));
+    wss.broadcast(obj.toString());
   } catch (err) {
     console.log(obj);
     console.error(err);
@@ -65,3 +71,4 @@ function normalizePort(val) {
 
   return false;
 }
+
