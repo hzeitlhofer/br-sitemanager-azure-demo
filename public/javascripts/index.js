@@ -52,6 +52,10 @@ $(document).ready(function () {
             labelString: 'Wheel Position',
             display: true
           },
+          ticks: {
+            min: 0,
+            max: 35000
+          },          
           position: 'right'
         }]
     }
