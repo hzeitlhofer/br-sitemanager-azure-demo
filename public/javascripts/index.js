@@ -10,7 +10,7 @@ $(document).ready(function () {
     datasets: [
       {
         fill: false,
-        label: 'Temperature',
+        label: 'CPU Temperature',
         yAxisID: 'Temperature',
         borderColor: "rgba(255, 204, 0, 1)",
         pointBoarderColor: "rgba(255, 204, 0, 1)",
@@ -64,10 +64,14 @@ $(document).ready(function () {
         id: 'Temperature',
         type: 'linear',
         scaleLabel: {
-          labelString: 'Temperature(C)',
+          labelString: 'CPU Temperature (°C)',
           display: true
         },
         position: 'left',
+        ticks: {
+          min: 40,
+          max: 50
+        },          
       }, {
           id: 'Wheel',
           type: 'linear',
@@ -124,7 +128,7 @@ $(document).ready(function () {
       for (i in obj.v) {
 
         var o = obj.v[i];
-//        console.log (o);
+        console.log (o);
 
         if (o.Left !== undefined) {
           if (o.Left) {
@@ -171,8 +175,11 @@ $(document).ready(function () {
         if (o.Wheel !== undefined) {
 //          var ts = new Date(o.ts).toTimeString();
           timeData.push("");
-          temperatureData.push(25);
           customData.push(o.Wheel);
+        }
+
+        if (o.Temperature !== undefined) {
+          temperatureData.push(o.Temperature/10);
         }
 
         if (o.GreenButton !== undefined) {
