@@ -17,8 +17,9 @@ The code is based on https://github.com/Azure-Samples/web-apps-node-iot-hub-data
 | Android Browser | 4.3 |
 | Chrome for Android | 56 |
 
-## Run a daemon application to send data to your IoT hub
-You can refer the related [lesson](#) to run an daemon application, to send data to your IoT hub.
+## Run a SiteManager to send data to the IoT Hub
+You need a B&R SiteManager to collect field data from your machines and send them to the IoT Hub!
+See [B&R Website](https://www.br-automation.com/de-at/technologie/industrial-iot) for further information!
 
 ## Add new consumer group to your event hub
 Go to [Azure Portal](https://portal.azure.com) and select your IoT hub. Click `Endpoints -> Events`, add a new consumer group and then save it.
@@ -27,11 +28,11 @@ Go to [Azure Portal](https://portal.azure.com) and select your IoT hub. Click `E
 Go to [Azure Portal](https://portal.azure.com) to create your own Azure web app service. Then do the following setting:
 
 * Go to `Application settings`, add key/value pairs `Azure.IoT.IoTHub.ConnectionString` and `Azure.IoT.IoTHub.ConsumerGroup` to `App settings` slot.
-* Go to `Deployment options`, set `Local git repository` to deploy your web app.
+* Go to `Deployment options`, select `Github repository` to deploy your web app.
 * Go to `Deployment credentials`, set your deploy username and password.
-* In the `Overview` page, note the `Git clone url`.
-* Push the repo's code to the git repo url you note in last step.
-* After the push and deploy finished, you can view the page to see the real-time data chart.
+* In the `Overview` page, note the `GitHub project` URL.
+* The code will then be synchronized to your WebApp
+* You can now view the page to see the real-time data chart.
 
 ## Local deploy
 * Open a console and set the following environment variable:
