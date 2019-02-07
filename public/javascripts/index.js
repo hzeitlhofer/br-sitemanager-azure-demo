@@ -34,7 +34,7 @@ $(document).ready(function () {
         fill: true,
         label: 'hide',
         pointRadius: 0,
-        steppedLine: true,
+        steppedLine: 'after',
         borderWidth: 0,
         yAxisID: 'Button',
         data: greenData,
@@ -44,7 +44,7 @@ $(document).ready(function () {
         fill: true,
         label: 'hide',
         pointRadius: 0,
-        steppedLine: true,
+        steppedLine: 'after',
         borderWidth: 0,
         yAxisID: 'Button',
         data: redData,
@@ -124,6 +124,7 @@ $(document).ready(function () {
       for (i in obj.v) {
 
         var o = obj.v[i];
+//        console.log (o);
 
         if (o.Left !== undefined) {
           if (o.Left) {
