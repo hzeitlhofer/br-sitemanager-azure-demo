@@ -2,6 +2,9 @@ $(document).ready(function () {
   var timeData = [],
     temperatureData = [],
     customData = [];
+    greenData = [];
+    redData = [];
+
   var data = {
     labels: timeData,
     datasets: [
@@ -26,6 +29,26 @@ $(document).ready(function () {
         pointHoverBackgroundColor: "rgba(24, 120, 240, 1)",
         pointHoverBorderColor: "rgba(24, 120, 240, 1)",
         data: customData
+      },
+      {
+        fill: true,
+        label: 'hide',
+        pointRadius: 0,
+        steppedLine: true,
+        borderWidth: 0,
+        yAxisID: 'Button',
+        data: greenData,
+        backgroundColor: "rgba(0, 255, 0, 0.4)",
+      },
+      {
+        fill: true,
+        label: 'hide',
+        pointRadius: 0,
+        steppedLine: true,
+        borderWidth: 0,
+        yAxisID: 'Button',
+        data: redData,
+        backgroundColor: "rgba(255, 0, 0, 0.4)",
       }
     ]
   }
@@ -57,7 +80,23 @@ $(document).ready(function () {
             max: 35000
           },          
           position: 'right'
-        }]
+       }, {
+        id: 'Button',
+        type: 'linear',
+        display: false,
+        ticks: {
+          min: 0,
+          max: 1
+        },          
+      }]
+    },
+    legend: {
+     labels: {
+        filter: function(item, chart) {
+          // Logic to remove a particular legend item goes here
+          return !item.text.includes('hide');
+        }
+      }
     }
   }
 
@@ -128,22 +167,32 @@ $(document).ready(function () {
           }
         }
 
-        if (o.Wheel) {
+        if (o.Wheel !== undefined) {
 //          var ts = new Date(o.ts).toTimeString();
           timeData.push("");
           temperatureData.push(25);
           customData.push(o.Wheel);
-
-          const maxLen = 100;
-          var len = timeData.length;
-          
-          if (len > maxLen) {
-            timeData.shift();
-            temperatureData.shift();
-            customData.shift();
-          }
-          myLineChart.update();
         }
+
+        if (o.GreenButton !== undefined) {
+          greenData.push(o.GreenButton);
+        }
+
+        if (o.RedButton !== undefined) {
+          redData.push(o.RedButton);
+        }
+
+        const maxLen = 100;
+        var len = timeData.length;
+        
+        if (len > maxLen) {
+          timeData.shift();
+          temperatureData.shift();
+          customData.shift();
+          greenData.shift();
+          redData.shift();
+        }
+        myLineChart.update();
       }
     } catch (err) {
       console.error(err);
