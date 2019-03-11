@@ -1,4 +1,4 @@
-// require('dotenv').config();
+//require('dotenv').config();
 
 const express = require('express');
 const http = require('http');
@@ -37,10 +37,10 @@ console.log('connected');
 
 iotHubReader.startReadMessage(function (obj, date) {
   try {
-//    console.log(date, obj.toString());
+//    console.log(date, obj);
     date = date || Date.now()
 //    wss.broadcast(JSON.stringify(Object.assign(obj, { time: moment.utc(date).format('YYYY:MM:DD[T]hh:mm:ss') })));
-    wss.broadcast(obj.toString());
+    wss.broadcast(JSON.stringify(obj));
   } catch (err) {
     console.log(obj);
     console.error(err);
