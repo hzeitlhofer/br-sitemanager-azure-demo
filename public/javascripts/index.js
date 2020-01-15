@@ -91,7 +91,7 @@ $(document).ready(function () {
 
   $("#noarrow").show();
 
-  var ws = new WebSocket('ws://' + location.host);
+  var ws = new WebSocket('wss://' + location.host);
   ws.onopen = function () {
     console.log('Successfully connect WebSocket');
   }
