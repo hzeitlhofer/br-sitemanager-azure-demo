@@ -1,6 +1,5 @@
 $(document).ready(function () {
   var timeData = [],
-    temperatureData = [],
     customData = [];
     greenData = [];
     redData = [];
@@ -10,19 +9,8 @@ $(document).ready(function () {
     datasets: [
       {
         fill: false,
-        label: 'CPU Temperature',
-        yAxisID: 'Temperature',
-        borderColor: "rgba(255, 204, 0, 1)",
-        pointBoarderColor: "rgba(255, 204, 0, 1)",
-        backgroundColor: "rgba(255, 204, 0, 0.4)",
-        pointHoverBackgroundColor: "rgba(255, 204, 0, 1)",
-        pointHoverBorderColor: "rgba(255, 204, 0, 1)",
-        data: temperatureData
-      },
-      {
-        fill: false,
-        label: 'Wheel',
-        yAxisID: 'Wheel',
+        label: 'Potentiometer',
+        yAxisID: 'Potentiometer',
         borderColor: "rgba(24, 120, 240, 1)",
         pointBoarderColor: "rgba(24, 120, 240, 1)",
         backgroundColor: "rgba(24, 120, 240, 0.4)",
@@ -61,22 +49,10 @@ $(document).ready(function () {
     },
     scales: {
       yAxes: [{
-        id: 'Temperature',
-        type: 'linear',
-        scaleLabel: {
-          labelString: 'CPU Temperature (°C)',
-          display: true
-        },
-        position: 'left',
-        ticks: {
-          min: 40,
-          max: 50
-        },          
-      }, {
-          id: 'Wheel',
+          id: 'Potentiometer',
           type: 'linear',
           scaleLabel: {
-            labelString: 'Wheel Position',
+            labelString: 'Potentiometer Position',
             display: true
           },
           ticks: {
@@ -115,7 +91,7 @@ $(document).ready(function () {
 
   $("#noarrow").show();
 
-  var ws = new WebSocket('wss://' + location.host);
+  var ws = new WebSocket('ws://' + location.host);
   ws.onopen = function () {
     console.log('Successfully connect WebSocket');
   }
@@ -130,8 +106,8 @@ $(document).ready(function () {
         var o = obj.v[i];
         console.log (o);
 
-        if (o.Left !== undefined) {
-          if (o.Left) {
+        if (o.SchalterLinks !== undefined) {
+          if (o.SchalterLinks) {
             switchPos = -1; 
             $("#leftarrow").show();
           } else {
@@ -139,8 +115,8 @@ $(document).ready(function () {
           }
         }
 
-        if (o.Right !== undefined) {
-          if (o.Right) {
+        if (o.SchalterRechts !== undefined) {
+          if (o.SchalterRechts) {
             switchPos = 1; 
             $("#rightarrow").show();
             $("#noarrow").hide();
@@ -156,38 +132,34 @@ $(document).ready(function () {
         }
 
 
-        if (o.GreenButton !== undefined) {
-          if (o.GreenButton) {
+        if (o.ButtonGruen !== undefined) {
+          if (o.ButtonGruen) {
             $("#greenbox").addClass("green");
           } else {
             $("#greenbox").removeClass("green");
           }
         }
 
-        if (o.RedButton !== undefined) {
-          if (o.RedButton) {
+        if (o.ButtonRot !== undefined) {
+          if (o.ButtonRot) {
             $("#redbox").addClass("red");
           } else {
             $("#redbox").removeClass("red");
           }
         }
 
-        if (o.Wheel !== undefined) {
+        if (o.Potentiometer !== undefined) {
 //          var ts = new Date(o.ts).toTimeString();
           timeData.push("");
-          customData.push(o.Wheel);
+          customData.push(o.Potentiometer);
         }
 
-        if (o.Temperature !== undefined) {
-          temperatureData.push(o.Temperature/10);
+        if (o.ButtonGruen !== undefined) {
+          greenData.push(o.ButtonGruen);
         }
 
-        if (o.GreenButton !== undefined) {
-          greenData.push(o.GreenButton);
-        }
-
-        if (o.RedButton !== undefined) {
-          redData.push(o.RedButton);
+        if (o.ButtonRot !== undefined) {
+          redData.push(o.ButtonRot);
         }
 
         const maxLen = 100;
