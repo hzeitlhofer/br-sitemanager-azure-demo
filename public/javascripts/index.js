@@ -167,7 +167,6 @@ $(document).ready(function () {
         
         if (len > maxLen) {
           timeData.shift();
-          temperatureData.shift();
           customData.shift();
           greenData.shift();
           redData.shift();
